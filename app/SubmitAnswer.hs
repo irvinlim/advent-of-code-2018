@@ -17,7 +17,8 @@ import GetDay
 main :: IO ()
 main = do
   putStrLn "\n === Advent of Code 2018 === \n"
-  day <- promptDay
+  day <- promptLine "Which day would you like to submit? "
+  level <- promptLine "Which level would you like to submit? "
   sessionId <- getSession
   putStrLn ("Getting input for Day " ++ day ++ "...")
   let inputUrl = "https://adventofcode.com/2018/day/" ++ day ++ "/input"
@@ -29,9 +30,9 @@ main = do
   putStrLn ""
   putStrLn "Submitting answer..."
   let submitUrl = "https://adventofcode.com/2018/day/" ++ day ++ "/answer"
-  res <- sendReq submitUrl sessionId ("level=" ++ day ++ "&answer=" ++ output)
+  res <- sendReq submitUrl sessionId ("level=" ++ level ++ "&answer=" ++ output)
   let resBody = decodeUtf8 (responseBody res)
-  let resText = findWrapped ("<article><p>", " <a href") resBody
+  let resText = findWrapped ("<article><p>", "</p></article>") resBody
   TIO.putStrLn resText
 
 findWrapped :: (String, String) -> T.Text -> T.Text
@@ -40,9 +41,9 @@ findWrapped (left, right) text =
       start = fst $ T.breakOn (T.pack right) end
    in start
 
-promptDay :: IO String
-promptDay = do
-  putStr "Which day would you like to submit? "
+promptLine :: String -> IO String
+promptLine prompt = do
+  putStr prompt
   hFlush stdout
   getLine
 
