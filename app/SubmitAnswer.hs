@@ -24,8 +24,8 @@ main = do
   let inputUrl = "https://adventofcode.com/2018/day/" ++ day ++ "/input"
   res <- sendReq inputUrl sessionId ""
   let input = decodeUtf8 (responseBody res)
-  putStrLn ("Running Day" ++ day ++ "...")
-  let output = GetDay.runDay day input
+  putStrLn ("Running Day " ++ day ++ " Level " ++ level ++ "...")
+  let output = GetDay.runDay day level input
   putStrLn ("Result: " ++ output)
   putStrLn ""
   putStrLn "Submitting answer..."

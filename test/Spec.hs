@@ -2,7 +2,7 @@ import Day1Test
 import System.Exit
 import Test.HUnit
 
-allTests = TestList [TestLabel "Day 01" Day1Test.tests]
+allTests = TestList [Day1Test.tests]
 
 main :: IO ()
 main = do
