@@ -5,6 +5,7 @@ module Main where
 import Data.ByteString.Char8 (pack)
 import qualified Data.ByteString.Lazy.Char8 as BS
 import Data.Char (isSpace)
+import qualified Data.Text.Lazy as T
 import Data.Text.Lazy.Encoding
 import qualified Data.Text.Lazy.IO as TIO
 import Network.HTTP.Client
@@ -20,12 +21,24 @@ main = do
   sessionId <- getSession
   putStrLn ("Getting input for Day " ++ day ++ "...")
   let inputUrl = "https://adventofcode.com/2018/day/" ++ day ++ "/input"
-  res <- sendReq inputUrl sessionId
+  res <- sendReq inputUrl sessionId ""
   let input = decodeUtf8 (responseBody res)
   putStrLn ("Running Day" ++ day ++ "...")
   let output = GetDay.runDay day input
-  putStrLn "Result:"
-  TIO.putStrLn output
+  putStrLn ("Result: " ++ output)
+  putStrLn ""
+  putStrLn "Submitting answer..."
+  let submitUrl = "https://adventofcode.com/2018/day/" ++ day ++ "/answer"
+  res <- sendReq submitUrl sessionId ("level=" ++ day ++ "&answer=" ++ output)
+  let resBody = decodeUtf8 (responseBody res)
+  let resText = findWrapped ("<article><p>", " <a href") resBody
+  TIO.putStrLn resText
+
+findWrapped :: (String, String) -> T.Text -> T.Text
+findWrapped (left, right) text =
+  let end = snd $ T.breakOnEnd (T.pack left) text
+      start = fst $ T.breakOn (T.pack right) end
+   in start
 
 promptDay :: IO String
 promptDay = do
@@ -38,14 +51,18 @@ getSession = do
   sessionId <- readFile ".session"
   stripSpace sessionId
 
-sendReq :: String -> String -> IO (Response BS.ByteString)
-sendReq url sessionId = do
+sendReq :: String -> String -> String -> IO (Response BS.ByteString)
+sendReq url sessionId body = do
   manager <- newManager tlsManagerSettings
   initialRequest <- parseRequest url
   let request =
         initialRequest
           { method = "POST"
-          , requestHeaders = [("Cookie", pack $ "session=" ++ sessionId)]
+          , requestHeaders =
+              [ ("Cookie", pack $ "session=" ++ sessionId)
+              , ("Content-Type", pack "application/x-www-form-urlencoded")
+              ]
+          , requestBody = RequestBodyBS $ pack body
           }
   httpLbs request manager
 
