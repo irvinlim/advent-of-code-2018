@@ -12,7 +12,7 @@ import Data.Text.Lazy.Read
 
 import Types
 
-level1 :: Challenge [String] Int
+level1 :: Challenge
 level1 =
   Challenge
     { day = 1
@@ -22,7 +22,7 @@ level1 =
     , sShow = show
     }
 
-level2 :: Challenge [String] Int
+level2 :: Challenge
 level2 =
   Challenge
     { day = 1

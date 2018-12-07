@@ -15,18 +15,22 @@ import Types
 import Challenges.Day1 as D1
 
 runChallenge :: String -> String -> T.Text -> String
-runChallenge day level input =
-  let challenge = getChallenge day level
-      parsed = sParse challenge input
-      output = sSolve challenge parsed
-      result = sShow challenge output
-   in result
+runChallenge day level =
+  let chall = getChallenge day level
+   in solveChallenge chall
 
+solveChallenge :: Challenge -> T.Text -> String
+solveChallenge Challenge {sParse = parse, sSolve = solve, sShow = show} =
+  show . solve . parse
+
+dummyChallenge :: Challenge
 dummyChallenge =
   Challenge {day = 0, level = 0, sParse = T.unpack, sSolve = id, sShow = id}
 
+allChallenges :: [[Challenge]]
 allChallenges = [[dummyChallenge], [D1.level1, D1.level2]]
 
+getChallenge :: String -> String -> Challenge
 getChallenge day level =
   let dayIndex = (read day :: Int)
       lvlIndex = (read level :: Int) - 1
