@@ -13,6 +13,7 @@ import qualified Data.Text.Lazy as T
 import Types
 
 import Challenges.Day01 as D1
+import Challenges.Day02 as D2
 
 runChallenge :: String -> String -> T.Text -> String
 runChallenge day level =
@@ -23,7 +24,7 @@ solveChallenge :: Challenge -> T.Text -> String
 solveChallenge Challenge {sParse = parse, sSolve = solve} = show . solve . parse
 
 allChallenges :: [[Challenge]]
-allChallenges = [[D1.level1, D1.level2]]
+allChallenges = [[D1.level1, D1.level2], [D2.level1]]
 
 getChallenge :: String -> String -> Challenge
 getChallenge day level =

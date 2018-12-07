@@ -8,8 +8,9 @@ import System.Exit
 import Test.HUnit
 
 import Day01Test
+import Day02Test
 
-allTests = TestList [Day01Test.tests]
+allTests = TestList [Day01Test.tests, Day02Test.tests]
 
 main :: IO ()
 main = do

@@ -4,7 +4,9 @@
  - This software is released under the MIT License.
  - https://opensource.org/licenses/MIT
 -}
-module Day01Test where
+module Day01Test
+  ( tests
+  ) where
 
 import Control.Exception
 import Data.List
