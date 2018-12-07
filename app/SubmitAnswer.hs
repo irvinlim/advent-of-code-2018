@@ -22,7 +22,7 @@ import ChallengeMux
 
 main :: IO ()
 main = do
-  putStrLn "\n === Advent of Code 2018 === \n"
+  putStrLn "\n === λdvent of Code 2018 === \n"
   day <- promptLine "Which day would you like to submit? "
   level <- promptLine "Which level would you like to submit? "
   sessionId <- getSession
