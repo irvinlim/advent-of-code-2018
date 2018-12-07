@@ -12,7 +12,7 @@ import qualified Data.Text.Lazy as T
 
 import Types
 
-import Challenges.Day1 as D1
+import Challenges.Day01 as D1
 
 runChallenge :: String -> String -> T.Text -> String
 runChallenge day level =

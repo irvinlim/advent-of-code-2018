@@ -4,14 +4,14 @@
  - This software is released under the MIT License.
  - https://opensource.org/licenses/MIT
 -}
-module Day1Test where
+module Day01Test where
 
 import Control.Exception
 import Data.List
 import Test.HUnit
 import TestUtils
 
-import Challenges.Day1
+import Challenges.Day01
 
 makeTest' chall (name, input, expected) =
   makeTest chall (name, intercalate "\n" input, expected)

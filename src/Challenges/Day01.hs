@@ -4,7 +4,7 @@
  - This software is released under the MIT License.
  - https://opensource.org/licenses/MIT
 -}
-module Challenges.Day1 where
+module Challenges.Day01 where
 
 import qualified Data.Set as S
 import qualified Data.Text.Lazy as T
