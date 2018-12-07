@@ -1,3 +1,9 @@
+{--
+ - Copyright (c) 2018 Irvin Lim
+ -
+ - This software is released under the MIT License.
+ - https://opensource.org/licenses/MIT
+-}
 {-# LANGUAGE OverloadedStrings #-}
 
 module Main where
@@ -12,7 +18,7 @@ import Network.HTTP.Client
 import Network.HTTP.Client.TLS
 import System.IO
 
-import GetDay
+import ChallengeMux
 
 main :: IO ()
 main = do
@@ -25,7 +31,7 @@ main = do
   res <- sendReq inputUrl sessionId ""
   let input = decodeUtf8 (responseBody res)
   putStrLn ("Running Day " ++ day ++ " Level " ++ level ++ "...")
-  let output = GetDay.runDay day level input
+  let output = runChallenge day level input
   putStrLn ("Result: " ++ output)
   putStrLn ""
   putStrLn "Submitting answer..."

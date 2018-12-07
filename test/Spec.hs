@@ -1,3 +1,9 @@
+{--
+ - Copyright (c) 2018 Irvin Lim
+ -
+ - This software is released under the MIT License.
+ - https://opensource.org/licenses/MIT
+-}
 import Day1Test
 import System.Exit
 import Test.HUnit
