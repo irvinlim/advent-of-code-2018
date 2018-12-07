@@ -23,15 +23,11 @@ solveChallenge :: Challenge -> T.Text -> String
 solveChallenge Challenge {sParse = parse, sSolve = solve, sShow = show} =
   show . solve . parse
 
-dummyChallenge :: Challenge
-dummyChallenge =
-  Challenge {day = 0, level = 0, sParse = T.unpack, sSolve = id, sShow = id}
-
 allChallenges :: [[Challenge]]
-allChallenges = [[dummyChallenge], [D1.level1, D1.level2]]
+allChallenges = [[D1.level1, D1.level2]]
 
 getChallenge :: String -> String -> Challenge
 getChallenge day level =
-  let dayIndex = (read day :: Int)
+  let dayIndex = (read day :: Int) - 1
       lvlIndex = (read level :: Int) - 1
    in (allChallenges !! dayIndex) !! lvlIndex
