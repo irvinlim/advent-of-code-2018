@@ -19,7 +19,6 @@ level1 =
     , level = 1
     , sParse = map T.unpack . T.lines
     , sSolve = sum . parseFreqs
-    , sShow = show
     }
 
 level2 :: Challenge
@@ -35,7 +34,6 @@ level2 =
                   then freq + x
                   else f (freq + x) (S.insert (freq + x) s) xs
            in f 0 (S.singleton 0) ((cycle . parseFreqs) freqs)
-    , sShow = show
     }
 
 parseFreqs :: [String] -> [Int]

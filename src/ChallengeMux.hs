@@ -20,8 +20,7 @@ runChallenge day level =
    in solveChallenge chall
 
 solveChallenge :: Challenge -> T.Text -> String
-solveChallenge Challenge {sParse = parse, sSolve = solve, sShow = show} =
-  show . solve . parse
+solveChallenge Challenge {sParse = parse, sSolve = solve} = show . solve . parse
 
 allChallenges :: [[Challenge]]
 allChallenges = [[D1.level1, D1.level2]]
