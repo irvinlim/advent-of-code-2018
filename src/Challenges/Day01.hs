@@ -13,31 +13,24 @@ import Data.Text.Lazy.Read
 import Types
 
 level1 :: Challenge
-level1 =
-  Challenge
-    { day = 1
-    , level = 1
-    , sParse = map T.unpack . T.lines
-    , sSolve = sum . parseFreqs
-    }
+level1 = Challenge {day = 1, level = 1, sParse = parse, sSolve = sum}
 
 level2 :: Challenge
 level2 =
   Challenge
     { day = 1
     , level = 2
-    , sParse = map T.unpack . T.lines
+    , sParse = cycle . parse
     , sSolve =
-        \freqs ->
-          let f freq s (x:xs) =
-                if (freq + x) `S.member` s
-                  then freq + x
-                  else f (freq + x) (S.insert (freq + x) s) xs
-           in f 0 (S.singleton 0) ((cycle . parseFreqs) freqs)
+        let f freq s (x:xs) =
+              if (freq + x) `S.member` s
+                then freq + x
+                else f (freq + x) (S.insert (freq + x) s) xs
+         in f 0 (S.singleton 0)
     }
 
-parseFreqs :: [String] -> [Int]
-parseFreqs = map parseFreq
+parse :: T.Text -> [Int]
+parse = map (parseFreq . T.unpack) . T.lines
 
 parseFreq :: String -> Int
 parseFreq =
