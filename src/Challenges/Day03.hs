@@ -7,6 +7,7 @@
 module Challenges.Day03 where
 
 import qualified Data.Map as M
+import qualified Data.Set as S
 import qualified Data.Text.Lazy as T
 import Text.Parsec (char, parse, space)
 import Text.ParserCombinators.Parsec.Combinator (sepEndBy1)
@@ -15,10 +16,14 @@ import Text.Printf (printf)
 import Types
 import Utils.Parsing
 
+type Point = (Int, Int)
+
+type ClaimID = Int
+
 data Claim = Claim
   { claimId :: Int
-  , origin :: (Int, Int)
-  , size :: (Int, Int)
+  , origin :: Point
+  , size :: Point
   }
 
 instance Show Claim where
@@ -32,21 +37,55 @@ level1 =
   Challenge
     { day = 3
     , level = 1
-    , sParse = maybeParse (sepEndBy1 claimParser eol)
+    , sParse = parseClaims
     , sSolve =
-        let filled = foldl (foldGrid fill) M.empty
-         in M.size . M.filter (> 1) . filled
+        let fillGrid = foldl (foldGrid fill) M.empty
+            pred xs = length xs > 1
+         in M.size . M.filter pred . fillGrid
     }
 
-foldGrid :: (b -> (Int, Int) -> b) -> b -> Claim -> b
-foldGrid f initial Claim {origin = (ox, oy), size = (sx, sy)} =
-  foldl f initial [(x, y) | x <- [ox .. ox + sx - 1], y <- [oy .. oy + sy - 1]]
+level2 :: Challenge
+level2 =
+  Challenge
+    { day = 3
+    , level = 2
+    , sParse = parseClaims
+    , sSolve =
+        let fillGrid grids =
+              foldl
+                (foldGrid fill')
+                (M.empty, S.fromList (map claimId grids))
+                grids
+            pred xs = length xs == 1
+         in head . S.elems . snd . fillGrid
+    }
 
-fill :: M.Map (Int, Int) Int -> (Int, Int) -> M.Map (Int, Int) Int
-fill m pt =
+foldGrid :: (b -> (Point, ClaimID) -> b) -> b -> Claim -> b
+foldGrid f initial Claim {claimId = i, origin = (ox, oy), size = (sx, sy)} =
+  foldl
+    f
+    initial
+    [((x, y), i) | x <- [ox .. ox + sx - 1], y <- [oy .. oy + sy - 1]]
+
+fill :: M.Map Point [ClaimID] -> (Point, ClaimID) -> M.Map Point [ClaimID]
+fill m (pt, claimId) =
   if pt `M.member` m
-    then M.adjust (+ 1) pt m
-    else M.insert pt 1 m
+    then M.adjust (claimId :) pt m
+    else M.insert pt [claimId] m
+
+fill' ::
+     (M.Map Point [ClaimID], S.Set ClaimID)
+  -> (Point, ClaimID)
+  -> (M.Map Point [ClaimID], S.Set ClaimID)
+fill' (m, s) (pt, claimId) =
+  if pt `M.member` m
+    -- Remove all claims from Set if it is occupied
+    then let newClaims = (claimId : (M.!) m pt)
+          in (M.adjust (claimId :) pt m, foldl (flip S.delete) s newClaims)
+    else (M.insert pt [claimId] m, s)
+
+parseClaims :: T.Text -> [Claim]
+parseClaims = maybeParse (sepEndBy1 claimParser eol)
 
 claimParser :: SParsec Claim
 claimParser = do
