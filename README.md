@@ -1,5 +1,7 @@
 # λdvent of Code 2018
 
+![https://git.irvinlim.com/irvin/advent-of-code-2018/pipelines](https://git.irvinlim.com/irvin/advent-of-code-2018/badges/master/build.svg)
+
 My attempt at Advent of Code 2018, completely in Haskell with automatic input fetching, running and submission. As a Haskell beginner, this serves as a platform for me to learn more about using some real world Haskell packages, as well as certain advanced Haskell concepts such as existentialisation.
 
 This is very much inspired by [mstksg/advent-of-code-2018](https://github.com/mstksg/advent-of-code-2018)!
