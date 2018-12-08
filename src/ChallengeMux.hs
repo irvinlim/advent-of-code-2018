@@ -14,7 +14,7 @@ import Types
 
 import Challenges.Day01 as D1
 import Challenges.Day02 as D2
-import Challenges.Day02 as D3
+import Challenges.Day03 as D3
 
 runChallenge :: String -> String -> T.Text -> String
 runChallenge day level =
