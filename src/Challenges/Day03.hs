@@ -10,6 +10,7 @@ import qualified Data.Text.Lazy as T
 import Data.Text.Lazy.Read
 import Text.Parsec
 import Text.ParserCombinators.Parsec.Combinator
+import Text.Printf
 
 import Types
 import Utils.Parsing
@@ -18,7 +19,13 @@ data Claim = Claim
   { claimId :: Int
   , origin :: (Int, Int)
   , size :: (Int, Int)
-  } deriving (Show)
+  }
+
+instance Show Claim where
+  show Claim { claimId = claimId
+             , origin = (originX, originY)
+             , size = (sizeX, sizeY)
+             } = printf "#%d @ %d,%d: %dx%d" claimId originX originY sizeX sizeY
 
 level1 :: Challenge
 level1 =
@@ -41,5 +48,5 @@ claimParser = do
   origin <- joinedBy number (char ',')
   char ':'
   space
-  size <- joinedBy number (char ',')
+  size <- joinedBy number (char 'x')
   return (Claim claimId origin size)
