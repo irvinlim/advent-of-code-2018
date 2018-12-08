@@ -40,4 +40,17 @@ level1TestCases =
 level1Tests =
   TestLabel "Level 1" $ TestList (map (makeTest' level1) level1TestCases)
 
-tests = TestLabel "Day 2" $ TestList [level1Tests]
+level2TestCases =
+  [ ("Pair of length 2 words returns correct difference", ["ab", "ac"], "a")
+  , ("Difference is correct when at front", ["ba", "ca"], "a")
+  , ("List of 3 words", ["de", "ab", "ac"], "a")
+  , ("Difference is longer", ["abcd", "abce", "bcef"], "abc")
+  , ( "Given test case"
+    , ["abcde", "fghij", "klmno", "pqrst", "fguij", "axcye", "wvxyz"]
+    , "fgij")
+  ]
+
+level2Tests =
+  TestLabel "Level 2" $ TestList (map (makeTest' level2) level2TestCases)
+
+tests = TestLabel "Day 2" $ TestList [level1Tests, level2Tests]
