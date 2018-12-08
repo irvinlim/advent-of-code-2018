@@ -27,25 +27,23 @@ stack test
 We can standardise the declaration of all challenge solutions in a single record type, where we can declare how to parse an input, solve the problem with the given input, and show the result. This separation of concerns allows us to test the `sSolve` function without involving the parse and show methods.
 
 ```hs
-data Challenge where
-  Challenge
-    :: { day :: Int
-       , level :: Int
-       , sParse :: T.Text -> a
-       , sSolve :: a -> b
-       , sShow :: b -> String}
-    -> Challenge
+data Challenge = forall a b. (Show b, Typeable b) =>
+                             Challenge
+  { day :: Int
+  , level :: Int
+  , sParse :: T.Text -> a
+  , sSolve :: a -> b
+  }
 ```
 
 By making `Challenge` [existential](https://wiki.haskell.org/Existential_types), we can still create a homogenous `[Challenge]` list by hiding the inner `a` and `b` types. If on the other hand we had parameterised the `Challenge` ADT as such, our list is no longer [homogenous](https://wiki.haskell.org/Heterogenous_collections).
 
 ```hs
-data Challenge' a b = Challenge'
+data Challenge' a b = (Show b, Typeable b) => Challenge'
   { day :: Int
   , level :: Int
   , sParse :: T.Text -> a
   , sSolve :: a -> b
-  , sShow :: b -> String
   }
 
 challenges = [challengeA :: Challenge' String Int, challengeB :: Challenge' Int Int]
