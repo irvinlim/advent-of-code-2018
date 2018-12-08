@@ -20,6 +20,10 @@ type Point = (Int, Int)
 
 type ClaimID = Int
 
+type ClaimMap = M.Map Point [ClaimID]
+
+type ClaimIDSet = S.Set ClaimID
+
 data Claim = Claim
   { claimId :: Int
   , origin :: Point
@@ -51,13 +55,11 @@ level2 =
     , level = 2
     , sParse = parseClaims
     , sSolve =
-        let fillGrid grids =
-              foldl
-                (foldGrid fill')
-                (M.empty, S.fromList (map claimId grids))
-                grids
-            pred xs = length xs == 1
-         in head . S.elems . snd . fillGrid
+        \grids ->
+          let claimIds = S.fromList (map claimId grids)
+              fillGrid = foldl (foldGrid fill') (M.empty, claimIds)
+              pred xs = length xs == 1
+           in head $ S.elems $ snd $ fillGrid grids
     }
 
 foldGrid :: (b -> (Point, ClaimID) -> b) -> b -> Claim -> b
@@ -67,16 +69,13 @@ foldGrid f initial Claim {claimId = i, origin = (ox, oy), size = (sx, sy)} =
     initial
     [((x, y), i) | x <- [ox .. ox + sx - 1], y <- [oy .. oy + sy - 1]]
 
-fill :: M.Map Point [ClaimID] -> (Point, ClaimID) -> M.Map Point [ClaimID]
+fill :: ClaimMap -> (Point, ClaimID) -> ClaimMap
 fill m (pt, claimId) =
   if pt `M.member` m
     then M.adjust (claimId :) pt m
     else M.insert pt [claimId] m
 
-fill' ::
-     (M.Map Point [ClaimID], S.Set ClaimID)
-  -> (Point, ClaimID)
-  -> (M.Map Point [ClaimID], S.Set ClaimID)
+fill' :: (ClaimMap, ClaimIDSet) -> (Point, ClaimID) -> (ClaimMap, ClaimIDSet)
 fill' (m, s) (pt, claimId) =
   if pt `M.member` m
     -- Remove all claims from Set if it is occupied
