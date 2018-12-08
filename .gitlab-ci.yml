@@ -1,0 +1,15 @@
+stages:
+  - lint
+  - test
+
+lint:
+  stage: lint
+  image: zenhaskell/foundation:lts-12.9
+  script:
+    - hlint app src test
+
+test:
+  stage: test
+  image: zenhaskell/foundation:lts-12.9
+  script:
+    - stack test
