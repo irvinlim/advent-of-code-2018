@@ -55,11 +55,11 @@ level2 =
     , level = 2
     , sParse = parseClaims
     , sSolve =
-        \grids ->
-          let claimIds = S.fromList (map claimId grids)
+        \claims ->
+          let claimIds = S.fromList (map claimId claims)
               fillGrid = foldl (foldGrid fill') (M.empty, claimIds)
               pred xs = length xs == 1
-           in head $ S.elems $ snd $ fillGrid grids
+           in head $ S.elems $ snd $ fillGrid claims
     }
 
 foldGrid :: (b -> (Point, ClaimID) -> b) -> b -> Claim -> b
