@@ -12,7 +12,7 @@ import Data.Maybe
 import qualified Data.Text.Lazy as T
 import Data.Typeable
 
-data Challenge = forall a b. (Show b, Typeable b) =>
+data Challenge = forall b a. (Show a, Show b, Typeable b) =>
                              Challenge
   { day :: Int
   , level :: Int

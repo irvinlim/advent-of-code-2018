@@ -21,6 +21,9 @@ runChallenge day level =
   let chall = getChallenge day level
    in solveChallenge chall
 
+parseChallengeInput :: Challenge -> T.Text -> String
+parseChallengeInput Challenge {sParse = parse} = show . parse
+
 solveChallenge :: Challenge -> T.Text -> String
 solveChallenge Challenge {sParse = parse, sSolve = solve} =
   toString . solve . parse
