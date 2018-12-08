@@ -4,8 +4,11 @@
  - This software is released under the MIT License.
  - https://opensource.org/licenses/MIT
 -}
-module Challenges.Day03 where
+module Challenges.Day03
+  ( level1
+  ) where
 
+import qualified Data.Map as M
 import qualified Data.Text.Lazy as T
 import Data.Text.Lazy.Read
 import Text.Parsec
@@ -34,8 +37,17 @@ level1 =
     , level = 1
     , sParse = maybeParse (sepEndBy1 claimParser eol)
     , sSolve =
-        let f x = "TBI"
-         in f
+        let fill m pt =
+              if pt `M.member` m
+                then M.adjust (+ 1) pt m
+                else M.insert pt 1 m
+            aux m Claim {origin = (ox, oy), size = (sx, sy)} =
+              foldl
+                fill
+                m
+                [(x, y) | x <- [ox .. ox + sx - 1], y <- [oy .. oy + sy - 1]]
+            filled = foldl aux M.empty
+         in M.size . M.filter (> 1) . filled
     }
 
 claimParser :: SParsec Claim

@@ -31,7 +31,7 @@ makeTest chall (name, input, expected) =
   let exp = toString expected
       inp = T.pack input
       res = solveChallenge chall inp
-   in TestCase $ assertEqual name exp res
+   in TestLabel name $ TestCase $ assertEqual name exp res
 
 makeTestWithLines ::
      (Show a, Typeable a) => Challenge -> (String, [String], a) -> Test

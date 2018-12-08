@@ -9,8 +9,9 @@ import Test.HUnit
 
 import Day01Test
 import Day02Test
+import Day03Test
 
-allTests = TestList [Day01Test.tests, Day02Test.tests]
+allTests = TestList [Day01Test.tests, Day02Test.tests, Day03Test.tests]
 
 main :: IO ()
 main = do
