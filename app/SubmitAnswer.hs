@@ -16,6 +16,7 @@ import Data.Text.Lazy.Encoding
 import qualified Data.Text.Lazy.IO as TIO
 import Network.HTTP.Client
 import Network.HTTP.Client.TLS
+import Network.URI.Encode
 import System.IO
 
 import ChallengeMux
@@ -36,7 +37,7 @@ main = do
   putStrLn ""
   putStrLn "Submitting answer..."
   let submitUrl = "https://adventofcode.com/2018/day/" ++ day ++ "/answer"
-  let reqBody = "level=" ++ level ++ "&answer=" ++ output
+  let reqBody = "level=" ++ level ++ "&answer=" ++ encode output
   res <- sendReq submitUrl sessionId reqBody
   let resBody = decodeUtf8 (responseBody res)
   let resText = findWrapped ("<article><p>", "</p></article>") resBody
