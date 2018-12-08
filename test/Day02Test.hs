@@ -8,18 +8,14 @@ module Day02Test
   ( tests
   ) where
 
-import Control.Exception
-import Data.List
 import Test.HUnit
-import TestUtils
 
 import Challenges.Day02
+import TestUtils
 
-makeTest' chall (name, input, expected) =
-  makeTest chall (name, intercalate "\n" input, expected)
-
+level1TestCases :: [(String, [String], Int)]
 level1TestCases =
-  [ ("Empty array should return 0", [] :: [String], 0)
+  [ ("Empty array should return 0", [], 0)
   , ("Non-repeating letters should return 0", ["abcde"], 0)
   , ("Two same letters w/o three same letters should be 0", ["aa"], 0)
   , ("Two same letters w/o three same letters should be 0", ["aa", "bb"], 0)
@@ -38,8 +34,10 @@ level1TestCases =
   ]
 
 level1Tests =
-  TestLabel "Level 1" $ TestList (map (makeTest' level1) level1TestCases)
+  TestLabel "Level 1" $
+  TestList (map (makeTestWithLines level1) level1TestCases)
 
+level2TestCases :: [(String, [String], String)]
 level2TestCases =
   [ ("Pair of length 2 words returns correct difference", ["ab", "ac"], "a")
   , ("Difference is correct when at front", ["ba", "ca"], "a")
@@ -51,6 +49,7 @@ level2TestCases =
   ]
 
 level2Tests =
-  TestLabel "Level 2" $ TestList (map (makeTest' level2) level2TestCases)
+  TestLabel "Level 2" $
+  TestList (map (makeTestWithLines level2) level2TestCases)
 
 tests = TestLabel "Day 2" $ TestList [level1Tests, level2Tests]

@@ -8,18 +8,14 @@ module Day01Test
   ( tests
   ) where
 
-import Control.Exception
-import Data.List
 import Test.HUnit
-import TestUtils
 
 import Challenges.Day01
+import TestUtils
 
-makeTest' chall (name, input, expected) =
-  makeTest chall (name, intercalate "\n" input, expected)
-
+level1TestCases :: [(String, [String], Int)]
 level1TestCases =
-  [ ("Empty array should return 0", [] :: [String], 0)
+  [ ("Empty array should return 0", [], 0)
   , ("Positive number should return the number", ["+1"], 1)
   , ("Negative number should return the number", ["-1"], -1)
   , ("Positive numbers should sum correctly", ["+1", "+2"], 3)
@@ -28,8 +24,10 @@ level1TestCases =
   ]
 
 level1Tests =
-  TestLabel "Level 1" $ TestList (map (makeTest' level1) level1TestCases)
+  TestLabel "Level 1" $
+  TestList (map (makeTestWithLines level1) level1TestCases)
 
+level2TestCases :: [(String, [String], Int)]
 level2TestCases =
   [ ("Given test case 1", ["+1", "-2", "+3", "+1"], 2)
   , ("Given test case 2", ["+1", "-1"], 0)
@@ -39,6 +37,7 @@ level2TestCases =
   ]
 
 level2Tests =
-  TestLabel "Level 2" $ TestList (map (makeTest' level2) level2TestCases)
+  TestLabel "Level 2" $
+  TestList (map (makeTestWithLines level2) level2TestCases)
 
 tests = TestLabel "Day 1" $ TestList [level1Tests, level2Tests]

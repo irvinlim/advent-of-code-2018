@@ -8,7 +8,9 @@ module TestUtils where
 
 import Control.Exception
 import Control.Monad
+import Data.List
 import qualified Data.Text.Lazy as T
+import Data.Typeable
 import GHC.Natural
 import Test.HUnit
 
@@ -24,9 +26,14 @@ assertException ex action =
   where
     isWanted = guard . (== ex)
 
-makeTest :: Show a => Challenge -> (String, String, a) -> Test
+makeTest :: (Show a, Typeable a) => Challenge -> (String, String, a) -> Test
 makeTest chall (name, input, expected) =
-  let exp = show expected
+  let exp = toString expected
       inp = T.pack input
       res = solveChallenge chall inp
    in TestCase $ assertEqual name exp res
+
+makeTestWithLines ::
+     (Show a, Typeable a) => Challenge -> (String, [String], a) -> Test
+makeTestWithLines chall (name, input, expected) =
+  makeTest chall (name, intercalate "\n" input, expected)
